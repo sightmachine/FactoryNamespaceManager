@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factory Namespace Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Factory Namespace Manager</h1>
+
+        <form method="POST">
+            <!-- Step 1: Example Variables -->
+            <label for="example_data">Please enter a set of example variable names and keywords that you would like your new formatting to look like.  The format should be : Old_Variable_Name “Old keywords if you have them” New_Variable_Name</label>
+            <textarea id="example_data" name="example_data" rows="4" placeholder="Old_Variable_Name 'Old keywords if you have them' New_Variable_Name" required></textarea>
+
+            <!-- Step 1.1: Optional Instructions -->
+            <label for="additional_instructions">Step 1.1 (Optional): If you would like to provide any additional instructions, please enter them here:</label>
+            <textarea id="additional_instructions" name="additional_instructions" rows="3" placeholder="Enter any additional instructions here..."></textarea>
+
+            <!-- Step 2: Variables to be renamed -->
+            <label for="variables">Step 2: Enter the variables to be renamed, one per line.  These can also include associate metadata and keywords:</label>
+            <textarea id="variables" name="variables" rows="4" placeholder="Enter variables one per line..." required></textarea>
+
+            <!-- Step 3: Submit Button -->
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
