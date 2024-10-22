@@ -1,52 +1,343 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+
+/* General reset */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    background-color: #fafafa;
+    color: #333;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Set to column for drawer placement */
+    justify-content: center;
+    align-items: center;
+    position: relative; /* For drawer positioning */
 }
 
 .container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #e7f1f8;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 987px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: calc(100vh - 55px); /* 110px accounts for the header and footer spacing */
+    position: relative;
 }
 
-h1 {
-    text-align: center;
+header {
+    height: 55px;
+    background-color: #fafafa;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0px;
+}
+
+.page-title {
+    font-size: 21px;
+    font-weight: 600;
     color: #333;
+    margin: 0;
+    white-space: nowrap; /* Prevents word wrap */
 }
 
-label {
+.button-container {
+    display: flex;
+    gap: 21px; /* Space between buttons */
+}
+
+button {
+    height: 33px;
+    padding: 0 21px;
+    font-size: 11px;
     font-weight: bold;
-    margin-top: 20px;
-    display: block;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
+    white-space: nowrap; /* Prevents word wrap for buttons */
+}
+
+/* Primary button */
+.submit-button {
+    background-color: #0098d1;
+    color: #fff;
+    border: 1px solid #0098d1;
+}
+
+.submit-button:hover {
+    background-color: #007bb8;
+}
+
+/* Secondary buttons */
+.secondary-button {
+    background-color: #fff;
+    color: #0098d1;
+    border: 1px solid #0098d1;
+}
+
+.secondary-button:hover {
+    background-color: #0098d1;
+    color: #fff;
+}
+
+.search-field {
+    width: 377px;
+    height: 33px; /* Changed to 55px */
+    padding: 10px; /* Adjusted for better alignment */
+    font-size: 13px;
+    font-family: Helvetica, Arial, sans-serif; /* Added font family */
+    border: 1px dotted #ccc;
+    border-radius: 3px;
+    transition: border-color 0.3s ease;
+    margin-top: 21px;
+    margin-bottom: 21px;
+    color: #333; /* Actual text color */
+}
+
+.search-field::placeholder {
+    color: #ccc; /* Hint text color */
+}
+
+.search-field:focus {
+    border: 1px solid #0098d1; /* Solid border on focus */
+    outline: none;
+}
+
+.search-field:hover {
+    border: 1px solid #333; /* Solid border on hover */
+    outline: none;
+}
+
+.textarea-container {
+    width: 987px;
+}
+
+.textarea-title {
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #333;
 }
 
 textarea {
     width: 100%;
+    border: 1px dotted #ccc;
+    border-radius: 3px;
+    font-size: 13px;
     padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
     resize: none;
+    margin-bottom: 21px;
+    transition: border-color 0.3s ease; /* Transition for border color */
+    color: #333; /* Actual text color */
+    overflow: auto; /* Allows scrolling */
+    font-size: 13px;
 }
 
-button {
-    display: block;
+.textarea-large {
+    height: 33vh; /* Take up 55% of the page height */
+}
+
+.textarea-small {
+    height: 8vh; /* Take up 5% of the page height */
+    font-family: Helvetica, Arial, sans-serif; /* Added font family */
+}
+
+/* Hover and focus effects for textareas */
+textarea:hover {
+    border: 1px solid #0098d1; /* Solid border on hover */
+}
+
+textarea:focus {
+    border: 1px solid #333; /* Solid border on focus */
+    outline: none;
+}
+
+textarea::placeholder {
+    color: #ccc; /* Hint text color */
+}
+
+/* Scrollbar styling */
+textarea::-webkit-scrollbar {
+    width: 5px; /* Width of the scrollbar */
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: #999; /* Color of the scrollbar thumb */
+    border-radius: 3px; /* Rounded corners for the thumb */
+}
+
+/* Data table styling */
+.data-table {
+    width: 100%; /* Make table stretch across the full width */
+    border-collapse: collapse;
+    font-size: 11px; /* Font size for table cells */
+}
+
+.data-table th, .data-table td {
+    border: 1px dotted #ccc;
+    padding: 13px; /* Padding left and right */
+    text-align: left;
+    white-space: nowrap; /* Prevents word wrap in table cells */
+}
+
+.data-table th {
+    height: 33px; /* Header height */
+    background-color: #fafafa; /* Header background color */
+}
+
+.data-table tr {
+    height: 33px; /* Row height */
+}
+
+.data-table tr:nth-child(odd) {
+    background-color: #fff; /* Odd row background color */
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #fafafa; /* Even row background color */
+}
+
+.data-table tr:hover {
+    background-color: #f3f3f3; /* Hover background color */
+}
+
+/* Drawer styling */
+.drawer {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    margin-top: 20px;
-    cursor: pointer;
+    height: 477px; /* Changed default height to 377px */
+    background-color: #fff; /* Background color for the drawer */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow for better visibility */
+    z-index: 100; /* Make sure it's above other content */
+    transition: height 0.3s; /* Smooth transition */
+    overflow: hidden; /* Prevents overflow of content */
+    padding: 0; /* Set padding to 0 */
+    margin: 0; /* Set margin to 0 */
+    display: none; /* Initially hidden */
+    position: relative; /* For positioning the close button */
 }
 
-button:hover {
-    background-color: #0056b3;
+.drawer-resizer {
+    width: 89px; /* Set width of the resizer */
+    height: 5px; /* Height of the draggable area */
+    border-radius: 21px;
+    margin-top: 5px;
+    background-color: #ccc; /* Color of the resizer */
+    cursor: ns-resize; /* Cursor style when hovering over the resizer */
+    position: absolute;
+    top: 0; /* Positioned at the top of the drawer */
+    left: calc(50% - 44.5px); /* Centered horizontally */
+    z-index: 101; /* Ensure it's above the drawer content */
+}
+
+.close-icon {
+    position: absolute; /* Position the icon at the top */
+    right: 10px; /* Position the icon to the right */
+    cursor: pointer; /* Pointer cursor on hover */
+    width: 55px; /* Container size */
+    height: 55px; /* Container size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 101; /* Ensure it’s above drawer content */
+}
+
+.close-icon svg {
+    width: 21px; /* Icon width */
+    height: 21px; /* Icon height */
+}
+
+/* Drawer Title */
+.drawer-title {
+    font-size: 11px; /* Font size */
+    color: #333; /* Text color */
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase; /* Uppercase text */
+    padding-top: 21px;
+    margin-left: 21px;
+    margin-bottom: 21px;
+    text-align: left; /* Center alignment */
+}
+
+/* Scrollable table container */
+#table-container {
+    width: 100%;
+    height: calc(377px - 55px - 25px); /* Adjust height to fit within drawer, minus title height */
+    overflow: auto; /* Enable scrolling */
+}
+
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 50%; /* Center the modal */
+    top: 50%; /* Center the modal */
+    transform: translate(-50%, -50%); /* Translate to center */
+    width: 610px; /* Set modal width */
+    height: 610px; /* Set modal height */
+    background-color: #fff; /* Modal background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Modal shadow */
+    border-radius: 8px; /* Rounded corners */
+    overflow: auto; /* Enable scrolling */
+}
+
+.modal-content {
+    padding: 21px; /* Padding inside modal */
+}
+
+.modal-body{
+
+    width: 100%;
+    background: #fafafa;
+    margin-top: 13px;
+    border-radius: 3px;
+    padding: 21px;
+    font-size: 13px;
+    color: #333;
+}
+
+.modal-body:hover{
+
+    background: #f3f3f3;
+}
+.modal-header {
+    display: flex; /* Flexbox for header */
+    justify-content: space-between; /* Space between elements */
+    align-items: center; /* Center alignment */
+}
+
+.modal-title {
+    font-size: 21x; /* Modal title size */
+    font-weight: bold; /* Modal title weight */
+    color: #333;
+}
+
+.close-modal {
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 21px; /* Close button size */
+    color: #0098d1;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit behind modal */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+a{
+    text-decoration: none;
+    color: #0098d1;
 }
