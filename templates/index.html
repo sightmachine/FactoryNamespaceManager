@@ -7,121 +7,166 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <!-- Page Header -->
-        <header>
-            <div class="page-title">Factory Namespace Manager</div>
-            <div class="button-container">
-                <button class="secondary-button" id="history-button">HISTORY</button>
-                <button class="secondary-button" id="export-csv-button">EXPORT TO CSV</button>
-                <button class="secondary-button" id="export-json-button">EXPORT TO SIGHT MACHINE</button>
-                <button class="submit-button" id="submit-button">SUBMIT</button>
-            </div>
-        </header>
+<div class="pageHeader">
 
-        <!-- Search Field -->
-
-        <!-- Textarea 1 -->
-        <div class="textarea-container">
-            <div class="textarea-title">Example variable names and keywords in the following format: Old_Variable_Name "Old keywords" New_Variable_Name </div>
-            <textarea id="input-textarea" class="textarea-large" placeholder='Old_Variable_Name "Old keywords" New_Variable_Name'></textarea>
+    <svg id="sightMachineAperture" width="111" height="33" viewBox="0 0 111 33" fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_4145_850)">
+            <path d="M19.3551 0.185393C18.391 0.111236 17.5011 0 16.5371 0C12.1618 0 8.23146 1.7427 5.30225 4.41236H20.764C20.9494 4.00449 21.0607 3.96742 21.2461 3.52247L19.3551 0.185393Z"
+                  fill="white"/>
+            <path d="M3.81913 5.93259C3.22587 6.63708 2.66969 7.41573 2.22474 8.26854C0.0371044 12.0506 -0.481997 16.3146 0.407891 20.2079L8.15733 6.82247C7.97194 6.41461 7.8607 6.37753 7.67531 5.93259H3.81913Z"
+                  fill="white"/>
+            <path d="M31.9989 10.7528C31.6652 9.86293 31.2944 8.97304 30.7753 8.19439C28.6247 4.48652 25.2135 1.92809 21.3573 0.741577L29.1067 14.127C29.5517 14.127 29.6629 14.127 30.1079 14.127L31.9989 10.7528Z"
+                  fill="white"/>
+            <path d="M32.5922 12.8292L24.8798 26.2146C25.0652 26.6225 25.1765 26.6596 25.3618 27.1045H29.218C29.8113 26.4 30.3675 25.6214 30.8124 24.7686C32.963 20.9865 33.5191 16.7966 32.5922 12.8292Z"
+                  fill="white"/>
+            <path d="M13.7191 32.8146C14.6461 32.9258 15.536 33 16.5371 33C20.8753 33 24.8427 31.2573 27.7349 28.5876H12.236C12.0506 28.9955 11.9394 29.0326 11.754 29.4775L13.7191 32.8146Z"
+                  fill="white"/>
+            <path d="M1.00116 22.2472C1.33487 23.1371 1.70565 24.027 2.22476 24.8056C4.44947 28.5506 7.82363 31.1832 11.6427 32.3697L3.93037 18.9101C3.48543 18.9101 3.37419 18.9101 2.92925 18.9101L1.00116 22.2472Z"
+                  fill="white"/>
+            <path d="M24.5832 18.391L24.027 17.9832C23.6933 17.7978 23.4708 17.3528 23.4708 16.945V16.0551C23.4708 15.6472 23.6562 15.2023 24.027 15.0169L24.5832 14.609L25.0281 14.2753C24.8798 13.4225 24.5461 12.7551 24.1011 11.9393L23.545 12.0506L22.9146 12.1618C22.5068 12.1989 22.0247 12.0506 21.8393 11.7539L21.2461 11.1607C20.9495 10.8641 20.8382 10.382 20.8382 10.0854L20.9495 9.45507L21.0607 8.89889C20.4304 8.49102 19.5775 8.1944 18.7247 7.97192L18.391 8.41687L17.9832 8.97305C17.8348 9.26968 17.3528 9.52923 16.945 9.52923H16.0551C15.6472 9.52923 15.2023 9.34383 15.0169 8.97305L14.609 8.41687L14.3124 8.009C13.4596 8.1944 12.7921 8.56518 11.9764 8.93597L12.0877 9.49215L12.1989 10.1225C12.236 10.5304 12.0877 11.0124 11.791 11.1978L11.2348 11.8652C10.9382 12.1618 10.4562 12.273 10.1596 12.273L9.52923 12.1618L8.97305 12.0506C8.56518 12.6809 8.26855 13.5337 8.04608 14.3865L8.49102 14.7202L9.0472 15.1281C9.34383 15.3135 9.60338 15.7584 9.60338 16.1663V17.0562C9.60338 17.4641 9.41799 17.909 9.0472 18.0944L8.49102 18.5023L8.04608 18.836C8.23147 19.6888 8.60226 20.3562 8.97305 21.1719L9.52923 21.0607L10.1596 20.9495C10.5674 20.9124 11.0495 21.0607 11.2348 21.3573L11.8652 21.9506C12.1618 22.2472 12.273 22.7292 12.273 23.0259L12.1618 23.6562L12.0506 24.2124C12.6809 24.6202 13.5337 24.9169 14.3865 25.1393L14.7202 24.6944L15.1281 24.1382C15.3135 23.8045 15.7584 23.582 16.1663 23.582H17.0562C17.4641 23.582 17.909 23.7674 18.0944 24.1382L18.5023 24.6944L18.836 25.1393C19.6888 24.9539 20.4304 24.5832 21.1719 24.2124L21.0607 23.6562L20.9495 23.0259C20.9124 22.618 21.0607 22.136 21.3573 21.9506L21.9877 21.3573C22.2843 21.0607 22.7663 20.9495 23.0629 20.9495L23.6933 21.0607L24.2495 21.1719C24.6573 20.5416 24.9539 19.6888 25.1764 18.836L24.5832 18.391ZM16.5371 19.8742C14.7202 19.8742 13.2371 18.391 13.2371 16.5742C13.2371 14.7573 14.7202 13.2742 16.5371 13.2742C18.3539 13.2742 19.8371 14.7573 19.8371 16.5742C19.8371 18.391 18.3539 19.8742 16.5371 19.8742Z"
+                  fill="white"/>
+            <path d="M110.161 28.7359H37.3382V29.9595H110.161V28.7359Z" fill="white"/>
+            <path d="M36.6708 12.1618L38.2652 10.2337C39.3034 11.0865 40.3787 11.5314 41.6393 11.5314C42.418 11.5314 42.8629 11.2348 42.8629 10.827V10.7528C42.8629 10.3079 42.5292 10.1225 41.0832 9.75167C38.8584 9.26965 37.1899 8.60223 37.1899 6.48875V6.45167C37.1899 4.52358 38.7101 3.15167 41.1944 3.15167C42.9742 3.15167 44.3461 3.63369 45.4955 4.52358L44.0495 6.56291C43.1225 5.93257 42.0843 5.52471 41.1202 5.52471C40.4158 5.52471 40.082 5.82134 40.082 6.15504V6.19212C40.082 6.67414 40.4899 6.82246 41.8989 7.19325C44.2719 7.67527 45.7551 8.491 45.7551 10.4562V10.4932C45.7551 12.6067 44.0124 13.9045 41.5652 13.9045C39.6742 13.9416 37.9686 13.2741 36.6708 12.1618Z"
+                  fill="white"/>
+            <path d="M47.4607 3.37415H50.3157V13.7932H47.4607V3.37415Z" fill="white"/>
+            <path d="M52.0955 8.52808C52.0955 5.45055 54.4686 3.07751 57.6944 3.07751C59.5113 3.07751 60.8461 3.63369 61.9584 4.56066L60.2157 6.59999C59.5112 6.00673 58.7326 5.59886 57.6944 5.59886C56.2113 5.59886 55.0247 6.89662 55.0247 8.45392V8.52808C55.0247 10.2708 56.1742 11.4573 57.8427 11.4573C58.5472 11.4573 59.1405 11.309 59.4742 11.0123V9.71459H57.4348V7.63819H62.218V12.3472C61.1427 13.2741 59.5483 13.9416 57.7315 13.9416C54.4686 13.9416 52.0955 11.7168 52.0955 8.52808Z"
+                  fill="white"/>
+            <path d="M64.1832 3.37415H67.0382V7.2674H70.7461V3.37415H73.6011V13.7932H70.7461V9.82583H67.0382V13.7932H64.1832C64.1832 13.7191 64.1832 3.37415 64.1832 3.37415Z"
+                  fill="white"/>
+            <path d="M78.0877 5.82134H75.0101V3.29999H84.0944V5.82134H80.9427V13.7932H78.0877V5.82134Z" fill="white"/>
+            <path d="M37.4865 16.3517H40.4899L42.9742 20.3562L45.4584 16.3517H48.4618V26.7708H45.6068V20.764L42.9 24.8427H42.8629L40.1933 20.764V26.6966H37.3753V16.3517H37.4865Z"
+                  fill="white"/>
+            <path d="M54.0607 16.2034H56.8416L61.254 26.6595H58.1764L57.4719 24.7685H53.4674L52.6888 26.6595H49.6854L54.0607 16.2034ZM56.6191 22.618L55.4697 19.6888L54.3203 22.618H56.6191Z"
+                  fill="white"/>
+            <path d="M61.5135 21.5798C61.5135 18.5022 63.8494 16.1292 66.9641 16.1292C69.0775 16.1292 70.4124 17.0191 71.3764 18.2427L69.2629 19.8742C68.6697 19.1697 67.9652 18.6506 67.0011 18.6506C65.5551 18.6506 64.5169 19.9483 64.5169 21.4315V21.5056C64.5169 23.0258 65.5551 24.2865 67.0011 24.2865C68.0764 24.2865 68.7438 23.8045 69.3742 22.9888L71.4876 24.509C70.4865 25.8809 69.1517 26.882 66.8899 26.882C63.9607 26.9191 61.5135 24.6573 61.5135 21.5798Z"
+                  fill="white"/>
+            <path d="M72.8225 16.3517H75.6775V20.2449H79.3854V16.3517H82.2405V26.7708H79.3854V22.8404H75.6775V26.8079H72.8225V16.3517Z"
+                  fill="white"/>
+            <path d="M84.6135 16.3517H87.4685V26.7708H84.6135V16.3517Z" fill="white"/>
+            <path d="M89.6933 16.3517H92.4L96.7011 21.8393V16.3517H99.5562V26.7708H97.0348L92.5854 21.0236V26.7708H89.7303L89.6933 16.3517Z"
+                  fill="white"/>
+            <path d="M101.744 16.3517H110.087V18.7618H104.599V20.3562H109.605V22.618H104.599V24.2494H110.198V26.7337H101.744V16.3517Z"
+                  fill="white"/>
+        </g>
+        <defs>
+            <clipPath id="clip0_4145_850">
+                <rect width="110.198" height="33" fill="white"/>
+            </clipPath>
+        </defs>
+    </svg>
+</div>
+<div class="container">
+    <header>
+        <div class="page-title">Factory Namespace Manager</div>
+        <div class="button-container">
+            <button class="secondary-button" id="history-button">HISTORY</button>
+            <button class="secondary-button" id="configuration-button">CONFIGURATION</button>
+            <button class="submit-button" id="submit-button">SUBMIT</button>
         </div>
+    </header>
 
-        <!-- Textarea 2 -->
-        <div class="textarea-container">
-            <div class="textarea-title">
-                Additional instructions. <a href="#" class="learn-more" target="_blank">Learn More</a>
-            </div>
-            <textarea class="textarea-small" placeholder="Instructions"></textarea>
+    <div class="textarea-container">
+        <div class="textarea-title">Example variable names and keywords in the following format: Old_Variable_Name "Old
+            keywords" New_Variable_Name
         </div>
+        <textarea id="input-textarea" class="textarea-large"
+                  placeholder='Old_Variable_Name "Old keywords" New_Variable_Name'></textarea>
     </div>
 
-    <!-- Drawer -->
-    <div class="drawer" id="drawer">
-        <div class="drawer-resizer" id="resizer"></div>
-        <div class="close-icon" id="close-icon">
-            <!-- SVG for caret down -->
-            <svg id="caret-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#0098d1">
-                <path id="caret-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 16l-6-6h12l-6 6z" />
-            </svg>
-        </div>
-        <!-- Drawer Title -->
-        <div class="drawer-title">DATA</div>
-        <!-- Data Table Container -->
-        <div id="table-container" style="display: none;">
-            <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Input Definition</th>
-                            <th>New Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows will be generated here dynamically -->
-                    </tbody>
-                </table>
-        </div>
+    <!--    Loader -->
+    <div id="loader" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <div class="spinner"></div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal-backdrop" id="modal-backdrop"></div>
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">History</div>
-                <span class="close-modal" id="close-modal">&times;</span>
+    <div class="textarea-container">
+
+        <div class="textarea-title">Additional instructions.
+            <a href="#" class="learn-more" target="_blank">Learn More</a>
+        </div>
+        <textarea class="textarea-small" id="additional-info" placeholder="Instructions"></textarea>
+
+    </div>
+
+    <div class="textarea-container">
+        <div class="textarea-title">Tags to be renamed.</div>
+        <textarea class="textarea-large" id="rename-tags" placeholder="Tags"></textarea>
+        <a href="#" class="learn-more" style="font-size: 13px;" onclick="openLicense()">Copyright & License
+            Agreement</a>
+    </div>
+</div>
+
+<div class="drawer" id="drawer">
+    <div class="drawer-resizer" id="drawer-resizer"></div>
+    <div class="close-icon" id="close-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path id="close-icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </div>
+
+    <!-- Drawer Title -->
+    <div style="margin-right: 55px; margin-top: 11px; float: right;">
+        <button style="float: right; margin-right: 21px; display: none;" class="secondary-button"
+                id="export-csv-button">EXPORT TO
+            CSV
+        </button>
+        <button style="float: right; margin-right: 13px; display: none;" class="secondary-button"
+                id="export-json-button">EXPORT TO
+            SIGHT MACHINE
+        </button>
+    </div>
+    <div class="drawer-title">DATA</div>
+    <!-- Data Table Container -->
+    <div id="table-container" style="display: none;">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Input Definition</th>
+                <th>New Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Rows will be generated here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop"></div>
+<div class="modal" id="history-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">History</div>
+            <span class="close-modal" id="close-history-modal">&times;</span>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdropConfig" id="modal-backdropConfig"></div>
+<div class="modal-small" id="config-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">Configuration</div>
+            <span class="close-modal" id="close-config-modal">&times;</span>
+        </div>
+        <div class="textarea-container-modal">
+
+            <div class="textarea-title">Model Endpoint URL</div>
+            <textarea class="textarea-tiny" placeholder='URL' id="endpoint-url"></textarea>
+
+            <div class="textarea-title">API Key</div>
+            <textarea class="textarea-tiny" placeholder='API Key' id="api-key"></textarea>
+
+            <div class="button-container-modal">
+                <button class="secondary-button" id="cancel-config-modal" onClick="">CANCEL</button>
+                <button class="submit-button" id="save-config">Save</button>
             </div>
-            <a href=""><div class="modal-body">
-                2023-10-20T14:43Z_Bold_Lion
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
-            <a href=""><div class="modal-body">
-                2023-10-20T14:43Z_Curious_Fox
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
-            <a href=""><div class="modal-body">
-                2023-10-20T14:43Z_Quiet_Owl
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
-            <a href=""><div class="modal-body">
-                2023-10-20T14:43Z_Mighty_Eagle
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
-            <a href=""><div class="modal-body">
-                2023-10-21T14:43Z_Bright_Star
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
-            <a href=""><div class="modal-body">
-                2023-10-21T14:43Z_Wise_Panda
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
-            <a href=""><div class="modal-body">
-                2023-10-21T14:43Z_Fierce_Tiger
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
-            <a href=""><div class="modal-body">
-                2023-10-21T14:43Z_Gentle_Dove
-                <p>
-                <span style="font-size: 11px; color: #999;">Jan. 25, 2024, at 00:00:00</span>
-                </p>
-            </div></a>
+
         </div>
     </div>
+</div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
