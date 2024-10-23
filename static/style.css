@@ -1,4 +1,3 @@
-
 /* General reset */
 * {
     margin: 0;
@@ -12,10 +11,21 @@ body {
     color: #333;
     height: 100vh;
     display: flex;
-    flex-direction: column; /* Set to column for drawer placement */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative; /* For drawer positioning */
+    position: relative;
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+.pageHeader {
+    width: 100%;
+    height: 55px;
+    background-color: #333;
+    margin-bottom: 21px;
+    position: static;
+    top: 0;
 }
 
 .container {
@@ -23,8 +33,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: calc(100vh - 55px); /* 110px accounts for the header and footer spacing */
+    height: calc(100vh - 55px); /* Adjust height to maintain the page header size */
     position: relative;
+    margin-top: 0px;
 }
 
 header {
@@ -35,6 +46,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0 0px;
+    margin-top: 0px;
 }
 
 .page-title {
@@ -42,27 +54,33 @@ header {
     font-weight: 600;
     color: #333;
     margin: 0;
-    white-space: nowrap; /* Prevents word wrap */
+    white-space: nowrap;
 }
 
 .button-container {
     display: flex;
-    gap: 21px; /* Space between buttons */
+    gap: 13px; /* Space between buttons */
+}
+
+.button-container-modal {
+    display: flex;
+    gap: 13px; /* Space between buttons */
+    float: right;
+    margin-bottom: 21px;
 }
 
 button {
     height: 33px;
-    padding: 0 21px;
+    padding: 0 8px;
     font-size: 11px;
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
     border-radius: 3px;
     transition: background-color 0.3s, color 0.3s;
-    white-space: nowrap; /* Prevents word wrap for buttons */
+    white-space: nowrap;
 }
 
-/* Primary button */
 .submit-button {
     background-color: #0098d1;
     color: #fff;
@@ -73,7 +91,6 @@ button {
     background-color: #007bb8;
 }
 
-/* Secondary buttons */
 .secondary-button {
     background-color: #fff;
     color: #0098d1;
@@ -87,34 +104,33 @@ button {
 
 .search-field {
     width: 377px;
-    height: 33px; /* Changed to 55px */
-    padding: 10px; /* Adjusted for better alignment */
+    height: 33px;
+    padding: 10px;
     font-size: 13px;
-    font-family: Helvetica, Arial, sans-serif; /* Added font family */
     border: 1px dotted #ccc;
     border-radius: 3px;
     transition: border-color 0.3s ease;
     margin-top: 21px;
     margin-bottom: 21px;
-    color: #333; /* Actual text color */
+    color: #333;
 }
 
 .search-field::placeholder {
-    color: #ccc; /* Hint text color */
+    color: #ccc;
 }
 
 .search-field:focus {
-    border: 1px solid #0098d1; /* Solid border on focus */
-    outline: none;
-}
-
-.search-field:hover {
-    border: 1px solid #333; /* Solid border on hover */
+    border: 1px solid #0098d1;
     outline: none;
 }
 
 .textarea-container {
     width: 987px;
+}
+
+.textarea-container-modal {
+    width: 100%;
+    margin-top: 21px;
 }
 
 .textarea-title {
@@ -131,145 +147,130 @@ textarea {
     padding: 10px;
     resize: none;
     margin-bottom: 21px;
-    transition: border-color 0.3s ease; /* Transition for border color */
-    color: #333; /* Actual text color */
-    overflow: auto; /* Allows scrolling */
-    font-size: 13px;
+    transition: border-color 0.3s ease;
+    color: #333;
+    overflow: auto;
 }
 
 .textarea-large {
-    height: 33vh; /* Take up 55% of the page height */
+    height: 33vh;
 }
 
 .textarea-small {
-    height: 8vh; /* Take up 5% of the page height */
-    font-family: Helvetica, Arial, sans-serif; /* Added font family */
+    height: 8vh;
 }
 
-/* Hover and focus effects for textareas */
+.textarea-tiny {
+    height: 5vh;
+}
+
 textarea:hover {
-    border: 1px solid #0098d1; /* Solid border on hover */
+    border: 1px solid #0098d1;
 }
 
 textarea:focus {
-    border: 1px solid #333; /* Solid border on focus */
+    border: 1px solid #333;
     outline: none;
 }
 
 textarea::placeholder {
-    color: #ccc; /* Hint text color */
+    color: #ccc;
 }
 
-/* Scrollbar styling */
 textarea::-webkit-scrollbar {
-    width: 5px; /* Width of the scrollbar */
+    width: 5px;
 }
 
 textarea::-webkit-scrollbar-thumb {
-    background-color: #999; /* Color of the scrollbar thumb */
-    border-radius: 3px; /* Rounded corners for the thumb */
+    background-color: #999;
+    border-radius: 3px;
 }
 
-/* Data table styling */
 .data-table {
-    width: 100%; /* Make table stretch across the full width */
+    width: 100%;
     border-collapse: collapse;
-    font-size: 11px; /* Font size for table cells */
+    font-size: 11px;
 }
 
 .data-table th, .data-table td {
     border: 1px dotted #ccc;
-    padding: 13px; /* Padding left and right */
+    padding: 13px;
     text-align: left;
-    white-space: nowrap; /* Prevents word wrap in table cells */
-}
-
-.data-table th {
-    height: 33px; /* Header height */
-    background-color: #fafafa; /* Header background color */
-}
-
-.data-table tr {
-    height: 33px; /* Row height */
+    white-space: nowrap;
 }
 
 .data-table tr:nth-child(odd) {
-    background-color: #fff; /* Odd row background color */
+    background-color: #fff;
 }
 
 .data-table tr:nth-child(even) {
-    background-color: #fafafa; /* Even row background color */
+    background-color: #fafafa;
 }
 
 .data-table tr:hover {
-    background-color: #f3f3f3; /* Hover background color */
+    background-color: #f3f3f3;
 }
 
-/* Drawer styling */
 .drawer {
     width: 100%;
-    height: 477px; /* Changed default height to 377px */
-    background-color: #fff; /* Background color for the drawer */
+    height: 377px;
+    background-color: #fff;
     position: fixed;
     bottom: 0;
     left: 0;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Shadow for better visibility */
-    z-index: 100; /* Make sure it's above other content */
-    transition: height 0.3s; /* Smooth transition */
-    overflow: hidden; /* Prevents overflow of content */
-    padding: 0; /* Set padding to 0 */
-    margin: 0; /* Set margin to 0 */
-    display: none; /* Initially hidden */
-    position: relative; /* For positioning the close button */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    transition: height 0.3s;
+    overflow: hidden;
+    display: none;
+    padding: 0;
 }
 
 .drawer-resizer {
-    width: 89px; /* Set width of the resizer */
-    height: 5px; /* Height of the draggable area */
+    width: 89px;
+    height: 5px;
     border-radius: 21px;
     margin-top: 5px;
-    background-color: #ccc; /* Color of the resizer */
-    cursor: ns-resize; /* Cursor style when hovering over the resizer */
+    background-color: #ccc;
+    cursor: ns-resize;
     position: absolute;
-    top: 0; /* Positioned at the top of the drawer */
-    left: calc(50% - 44.5px); /* Centered horizontally */
-    z-index: 101; /* Ensure it's above the drawer content */
+    top: 0;
+    left: calc(50% - 44.5px);
+    z-index: 101;
 }
 
 .close-icon {
-    position: absolute; /* Position the icon at the top */
-    right: 10px; /* Position the icon to the right */
-    cursor: pointer; /* Pointer cursor on hover */
-    width: 55px; /* Container size */
-    height: 55px; /* Container size */
+    position: absolute;
+    right: 8px;
+    cursor: pointer;
+    width: 55px;
+    height: 55px;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 101; /* Ensure it’s above drawer content */
+    z-index: 101;
 }
 
 .close-icon svg {
-    width: 21px; /* Icon width */
-    height: 21px; /* Icon height */
+    width: 21px;
+    height: 21px;
+    color: #0098d1;
 }
 
-/* Drawer Title */
 .drawer-title {
-    font-size: 11px; /* Font size */
-    color: #333; /* Text color */
-    font-weight: bold; /* Bold text */
-    text-transform: uppercase; /* Uppercase text */
+    font-size: 11px;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
     padding-top: 21px;
     margin-left: 21px;
     margin-bottom: 21px;
-    text-align: left; /* Center alignment */
 }
 
-/* Scrollable table container */
 #table-container {
     width: 100%;
-    height: calc(377px - 55px - 25px); /* Adjust height to fit within drawer, minus title height */
-    overflow: auto; /* Enable scrolling */
+    height: 100%;
+    overflow: auto;
 }
 
 /* Modal styles */
@@ -288,11 +289,27 @@ textarea::-webkit-scrollbar-thumb {
     overflow: auto; /* Enable scrolling */
 }
 
+/* Modal styles */
+.modal-small {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 50%; /* Center the modal */
+    top: 50%; /* Center the modal */
+    transform: translate(-50%, -50%); /* Translate to center */
+    width: 610px; /* Set modal width */
+    height: auto; /* Set modal height */
+    background-color: #fff; /* Modal background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Modal shadow */
+    border-radius: 8px; /* Rounded corners */
+    overflow: auto; /* Enable scrolling */
+}
+
 .modal-content {
     padding: 21px; /* Padding inside modal */
 }
 
-.modal-body{
+.modal-body {
 
     width: 100%;
     background: #fafafa;
@@ -303,10 +320,11 @@ textarea::-webkit-scrollbar-thumb {
     color: #333;
 }
 
-.modal-body:hover{
+.modal-body:hover {
 
     background: #f3f3f3;
 }
+
 .modal-header {
     display: flex; /* Flexbox for header */
     justify-content: space-between; /* Space between elements */
@@ -337,7 +355,45 @@ textarea::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
 }
 
-a{
+/* Modal backdropConfig */
+.modal-backdropConfig {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit behind modal */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+a {
     text-decoration: none;
     color: #0098d1;
+}
+
+#sightMachineAperture {
+
+    margin-top: 9px;
+    margin-left: 21px;
+
+}
+
+/* Add some basic styles for the loader */
+.spinner {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
