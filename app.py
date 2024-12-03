@@ -60,24 +60,14 @@ def generate_table():
 
     {user_input_instructions}
 
-    Answer the following questions:
-    1.  What is the best name?
-    2.  Why did you choose this name?
-    3.  Are there any discrepancies between the use of numbers in the keywords versus in the name?
-    4.  How many of the predefined mappings did you use?  Provide a number, followed by a comma, followed by a list of which ones.
-    5.  How of the associated keywords did you use?  Provide a number, followed by a comma, followed by a list of which ones.
-    6.  How many words were in your list of keywords?  Provide just a number.
-    7.  How many characters were in the chosen best name?  Provide just a number.
-
-    ANSWERS:
-    1.  The best name is:
-    2.  I chose that name because:
-    3.  Discrepancies:
-    4.  Which mappings:
-    5.  Number of keywords:
-    6.  Number of words in Keywords:
-    7.  Number of characters in the best name.
-
+    A typical name will have a city name followed by a line number followed by a machine followed by sensor or measurement specific information.
+    Common machine names are BLENDER, PALLETIZER, FILLER, etc.  
+    For example 
+    - DET_L1_BLENDER_TEMP 
+    - WAS_L3_PALLETIZER_LAYHNDL 
+    - SAN_L10_FILLER_PRESS3
+    
+    
     """
 
     assist_reply = "OK, I will assist you with that."
@@ -86,7 +76,7 @@ def generate_table():
     for new_tag_info in user_input_new_tags.split("\n"):
         if not new_tag_info:
             continue
-        print(f"Doing for {new_tag_info}")
+        print(f"For {new_tag_info}")
         user_prompt = f""" 
         What is the best name associated with keywords '{new_tag_info}'?
         """
@@ -94,8 +84,9 @@ def generate_table():
         try:
             response = client.complete(
                 messages=[
-                    UserMessage(content=user_pre_prompt),
-                    AssistantMessage(content=assist_reply),
+                    # UserMessage(content=user_pre_prompt),
+                    # AssistantMessage(content=assist_reply),
+                    SystemMessage(content=user_pre_prompt),
                     UserMessage(content=user_prompt),
                 ],
             )
