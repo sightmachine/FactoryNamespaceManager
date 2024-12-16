@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factory Namespace Manager</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 <div class="pageHeader">
@@ -61,9 +61,19 @@
         <div class="page-title">Factory Namespace Manager</div>
         <div class="button-container">
             <button class="secondary-button" id="history-button">HISTORY</button>
-            <button class="secondary-button" id="configuration-button">CONFIGURATION</button>
-            <button class="submit-button" id="submit-button">SUBMIT</button>
+            {% if current_user.name == "demo" %}
+                <button class="secondary-button" id="configuration-button-demo">CONFIGURATION</button>
+                <button class="submit-button" id="submit-button_demo">SUBMIT</button>
+            {% else %}
+                <button class="secondary-button" id="configuration-button">CONFIGURATION</button>
+                <button class="submit-button" id="submit-button">SUBMIT</button>
+            {% endif %}
         </div>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+            <button class="submit-button" id="logout-button">Logout</button>
+        </a>
+        {% endif %}
     </header>
 
     <div class="textarea-container">
@@ -71,7 +81,9 @@
             keywords" New_Variable_Name
         </div>
         <textarea id="input-textarea" class="textarea-large"
-                  placeholder='Old_Variable_Name "Old keywords" New_Variable_Name'></textarea>
+                  placeholder='Old_Variable_Name "Old keywords" New_Variable_Name'>{{ sample_input_content }}</textarea>
+
+
     </div>
 
     <!--    Loader -->
@@ -90,7 +102,7 @@
 
     <div class="textarea-container">
         <div class="textarea-title">Tags to be renamed.</div>
-        <textarea class="textarea-large" id="rename-tags" placeholder="Tags"></textarea>
+        <textarea class="textarea-large" id="rename-tags" placeholder="Tags">{{ sample_output_content }}</textarea>
         <a href="#" class="learn-more" style="font-size: 13px;" onclick="openLicense()">Copyright & License
             Agreement</a>
     </div>
@@ -153,10 +165,10 @@
         <div class="textarea-container-modal">
 
             <div class="textarea-title">Model Endpoint URL</div>
-            <textarea class="textarea-tiny" placeholder='URL' id="endpoint-url"></textarea>
+            <textarea class="textarea-tiny" placeholder='URL' id="endpoint-url">{{ api_endpoint }}</textarea>
 
             <div class="textarea-title">API Key</div>
-            <textarea class="textarea-tiny" placeholder='API Key' id="api-key"></textarea>
+            <textarea class="textarea-tiny" placeholder='API Key' id="api-key">{{ api_key }}</textarea>
 
             <div class="button-container-modal">
                 <button class="secondary-button" id="cancel-config-modal" onClick="">CANCEL</button>
@@ -167,6 +179,6 @@
     </div>
 </div>
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

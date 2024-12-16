@@ -89,11 +89,14 @@ const closeHistoryModal = document.getElementById('close-history-modal');
 const modalBackdrop = document.getElementById('modal-backdrop');
 
 const configButton = document.getElementById('configuration-button');
+const configButtonDemo = document.getElementById('configuration-button-demo');
 const configModal = document.getElementById('config-modal');
 const closeConfigyModal = document.getElementById('close-config-modal');
 const closeConfigyModal2 = document.getElementById('cancel-config-modal');
 const modalbackdropConfig = document.getElementById('modal-backdropConfig');
 const saveconfigButton = document.getElementById('save-config');
+const submitButton = document.getElementById('submit-button');
+const submitButtonDemo = document.getElementById('submit-button_demo');
 
 
 historyButton.addEventListener('click', () => {
@@ -112,11 +115,27 @@ modalBackdrop.addEventListener('click', () => {
     modalBackdrop.style.display = 'none';
 });
 
-configButton.addEventListener('click', () => {
-    configModal.style.display = 'block';
-    modalbackdropConfig.style.display = 'block';
-    loadConfig();
-});
+if (configButton) {
+    configButton.addEventListener('click', () => {
+        configModal.style.display = 'block';
+        modalbackdropConfig.style.display = 'block';
+        loadConfig();
+    });
+} else {
+    console.log('configuration-button not found');
+}
+
+if (configButtonDemo) {
+    configButtonDemo.addEventListener('click', () => {
+        configModal.style.display = 'block';
+        modalbackdropConfig.style.display = 'block';
+        saveConfig()
+        loadConfig();
+    });
+} else {
+    console.log('configuration-button-demo not found');
+}
+
 
 closeConfigyModal.addEventListener('click', () => {
     configModal.style.display = 'none';
@@ -202,73 +221,150 @@ document.getElementById('export-json-button').addEventListener('click', () => {
     URL.revokeObjectURL(url); // Free up memory
 });
 
-document.getElementById('submit-button').addEventListener('click', () => {
+if (submitButton) {
+    submitButton.addEventListener('click', () => {
 
-    document.getElementById("loader").style.display = "block";
+        document.getElementById("loader").style.display = "block";
 
-    const userInput = document.getElementById('input-textarea').value;
-    const renameTags = document.getElementById('rename-tags').value;
-    const additionalInfo = document.getElementById('additional-info').value;
-    const modelEndpointUrl = localStorage.getItem('modelEndpointUrl');
-    const apiKey = localStorage.getItem('apiKey');
+        const userInput = document.getElementById('input-textarea').value;
+        const renameTags = document.getElementById('rename-tags').value;
+        const additionalInfo = document.getElementById('additional-info').value;
+        const modelEndpointUrl = localStorage.getItem('modelEndpointUrl');
+        const apiKey = localStorage.getItem('apiKey');
 
-    fetch('/generate-table', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            input: userInput,
-            endpointurl: modelEndpointUrl,
-            apikey: apiKey,
-            rename_tags: renameTags,
-            additional_info: additionalInfo
-        }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("loader").style.display = "none";
-            const tbody = document.querySelector('.data-table tbody');
-            tbody.innerHTML = ''; // Clear any existing rows
-
-            // Check if there is data to populate the table
-            if (data && data.length > 0) {
-                // Iterate through the returned data and populate the table
-                data.forEach(row => {
-                    const tr = document.createElement('tr');
-
-                    // Create "Input definition" column
-                    const tdInputDef = document.createElement('td');
-                    tdInputDef.textContent = row.input_definition;
-                    tr.appendChild(tdInputDef);
-
-                    // Create "New name" column (blank for now)
-                    const tdNewName = document.createElement('td');
-                    tdNewName.textContent = row.new_name || ''; // Empty string for blank new name
-                    tr.appendChild(tdNewName);
-
-                    tbody.appendChild(tr);
-                });
-
-                // Show the table and drawer
-                document.getElementById('table-container').style.display = 'block';
-                document.getElementById('drawer').style.display = 'block';
-
-                // Show the export buttons
-                document.getElementById('export-json-button').style.display = 'inline-block';
-                document.getElementById('export-csv-button').style.display = 'inline-block';
-            } else {
-                // Hide the export buttons if no data
-                document.getElementById('export-json-button').style.display = 'none';
-                document.getElementById('export-csv-button').style.display = 'none';
-            }
+        fetch('/generate-table', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                input: userInput,
+                endpointurl: modelEndpointUrl,
+                apikey: apiKey,
+                rename_tags: renameTags,
+                additional_info: additionalInfo
+            }),
         })
-        .catch(error => {
-            console.error('Error:', error);
-            // Hide the loader in case of an error as well
-            document.getElementById("loader").style.display = "none";
-        });
-});
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loader").style.display = "none";
+                const tbody = document.querySelector('.data-table tbody');
+                tbody.innerHTML = ''; // Clear any existing rows
+
+                // Check if there is data to populate the table
+                if (data && data.length > 0) {
+                    // Iterate through the returned data and populate the table
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+
+                        // Create "Input definition" column
+                        const tdInputDef = document.createElement('td');
+                        tdInputDef.textContent = row.input_definition;
+                        tr.appendChild(tdInputDef);
+
+                        // Create "New name" column (blank for now)
+                        const tdNewName = document.createElement('td');
+                        tdNewName.textContent = row.new_name || ''; // Empty string for blank new name
+                        tr.appendChild(tdNewName);
+
+                        tbody.appendChild(tr);
+                    });
+
+                    // Show the table and drawer
+                    document.getElementById('table-container').style.display = 'block';
+                    document.getElementById('drawer').style.display = 'block';
+
+                    // Show the export buttons
+                    document.getElementById('export-json-button').style.display = 'inline-block';
+                    document.getElementById('export-csv-button').style.display = 'inline-block';
+                } else {
+                    // Hide the export buttons if no data
+                    document.getElementById('export-json-button').style.display = 'none';
+                    document.getElementById('export-csv-button').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide the loader in case of an error as well
+                document.getElementById("loader").style.display = "none";
+            });
+    });
+} else {
+    console.log('submit-button not found');
+}
+
+if (submitButtonDemo) {
+    submitButtonDemo.addEventListener('click', () => {
+
+        document.getElementById("loader").style.display = "block";
+        saveConfig();
+        loadConfig();
+        const userInput = document.getElementById('input-textarea').value;
+        const renameTags = document.getElementById('rename-tags').value;
+        const additionalInfo = document.getElementById('additional-info').value;
+        const modelEndpointUrl = localStorage.getItem('modelEndpointUrl');
+        const apiKey = localStorage.getItem('apiKey');
+
+        fetch('/generate-table', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                input: userInput,
+                endpointurl: modelEndpointUrl,
+                apikey: apiKey,
+                rename_tags: renameTags,
+                additional_info: additionalInfo
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loader").style.display = "none";
+                const tbody = document.querySelector('.data-table tbody');
+                tbody.innerHTML = ''; // Clear any existing rows
+
+                // Check if there is data to populate the table
+                if (data && data.length > 0) {
+                    // Iterate through the returned data and populate the table
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+
+                        // Create "Input definition" column
+                        const tdInputDef = document.createElement('td');
+                        tdInputDef.textContent = row.input_definition;
+                        tr.appendChild(tdInputDef);
+
+                        // Create "New name" column (blank for now)
+                        const tdNewName = document.createElement('td');
+                        tdNewName.textContent = row.new_name || ''; // Empty string for blank new name
+                        tr.appendChild(tdNewName);
+
+                        tbody.appendChild(tr);
+                    });
+
+                    // Show the table and drawer
+                    document.getElementById('table-container').style.display = 'block';
+                    document.getElementById('drawer').style.display = 'block';
+
+                    // Show the export buttons
+                    document.getElementById('export-json-button').style.display = 'inline-block';
+                    document.getElementById('export-csv-button').style.display = 'inline-block';
+                } else {
+                    // Hide the export buttons if no data
+                    document.getElementById('export-json-button').style.display = 'none';
+                    document.getElementById('export-csv-button').style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide the loader in case of an error as well
+                document.getElementById("loader").style.display = "none";
+            });
+    });
+} else {
+    console.log('submit-button-demo not found');
+}
 
 function fetchHistory() {
     fetch('/get-history')  // API call to fetch history
@@ -351,6 +447,7 @@ function loadConfig() {
 function saveConfig() {
     const endpointUrl = document.getElementById('endpoint-url').value;
     const apiKey = document.getElementById('api-key').value;
+    console.log(endpointUrl)
 
     localStorage.setItem('modelEndpointUrl', endpointUrl);
     localStorage.setItem('apiKey', apiKey);
