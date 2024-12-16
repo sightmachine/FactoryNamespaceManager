@@ -62,11 +62,11 @@
         <div class="button-container">
             <button class="secondary-button" id="history-button">HISTORY</button>
             {% if current_user.name == "demo" %}
-                <button class="secondary-button" id="configuration-button-demo">CONFIGURATION</button>
-                <button class="submit-button" id="submit-button_demo">SUBMIT</button>
+            <button class="secondary-button" id="configuration-button-demo">CONFIGURATION</button>
+            <button class="submit-button" id="submit-button_demo">SUBMIT</button>
             {% else %}
-                <button class="secondary-button" id="configuration-button">CONFIGURATION</button>
-                <button class="submit-button" id="submit-button">SUBMIT</button>
+            <button class="secondary-button" id="configuration-button">CONFIGURATION</button>
+            <button class="submit-button" id="submit-button">SUBMIT</button>
             {% endif %}
         </div>
         {% if current_user.is_authenticated %}
@@ -77,8 +77,8 @@
     </header>
 
     <div class="textarea-container">
-        <div class="textarea-title">Example variable names and keywords in the following format: Old_Variable_Name "Old
-            keywords" New_Variable_Name
+        <div class="textarea-title">Example variable names, keywords and the new assigned name.
+            <a href="#" class="learn-more" target="_blank">Instructions</a>
         </div>
         <textarea id="input-textarea" class="textarea-large"
                   placeholder='Old_Variable_Name "Old keywords" New_Variable_Name'>{{ sample_input_content }}</textarea>
@@ -93,18 +93,21 @@
 
     <div class="textarea-container">
 
-        <div class="textarea-title">Additional instructions.
-            <a href="#" class="learn-more" target="_blank">Learn More</a>
+        <div class="textarea-title">(Optional) Additional instructions.
+            <a href="#" class="learn-more" target="_blank">Instructions</a>
         </div>
         <textarea class="textarea-small" id="additional-info" placeholder="Instructions"></textarea>
 
     </div>
 
     <div class="textarea-container">
-        <div class="textarea-title">Tags to be renamed.</div>
+        <div class="textarea-title">Tags to be renamed. <a href="#" class="learn-more" target="_blank">Instructions</a>
+        </div>
         <textarea class="textarea-large" id="rename-tags" placeholder="Tags">{{ sample_output_content }}</textarea>
-        <a href="#" class="learn-more" style="font-size: 13px;" onclick="openLicense()">Copyright & License
-            Agreement</a>
+    </div>
+    <div class="button-container">
+        <button class="submit-button" id="submit-button">RENAME</button>
+
     </div>
 </div>
 
