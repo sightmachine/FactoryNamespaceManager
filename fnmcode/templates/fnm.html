@@ -106,8 +106,11 @@
         <textarea class="textarea-large" id="rename-tags" placeholder="Tags">{{ sample_output_content }}</textarea>
     </div>
     <div class="button-container">
+        {% if current_user.name == "demo" %}
+        <button class="submit-button" id="submit-button_demo">RENAME</button>
+        {% else %}
         <button class="submit-button" id="submit-button">RENAME</button>
-
+        {% endif %}
     </div>
 </div>
 
