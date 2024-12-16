@@ -34,12 +34,6 @@ def create_app(app):
     global SIMPLE_CAPTCHA
     db.init_app(app)
 
-    # YOUR_CONFIG = {
-    #     'SECRET_CAPTCHA_KEY': '4e751d23-8df3-4632-aba6-e8598901a8bd',
-    #     'CAPTCHA_LENGTH': 6,
-    #     'CAPTCHA_DIGITS': False,
-    #     'EXPIRE_SECONDS': 600,
-    # }
     app = SIMPLE_CAPTCHA.init_app(app)
 
     login_manager = LoginManager()
