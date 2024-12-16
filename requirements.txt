@@ -1,2 +1,6 @@
 azure-ai-inference==1.0.0b5
 Flask==3.0.3
+flask-sqlalchemy
+flask-login
+Werkzeug==3.0.0
+flask-simple-captcha
