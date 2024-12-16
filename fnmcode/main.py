@@ -18,6 +18,7 @@ current_file_path = os.path.abspath(__file__)
 project_dir = os.path.dirname(current_file_path)
 main_dir = os.path.dirname(project_dir)
 
+
 def get_name_from_examples(examples, instructions, old, endpoint, api_key):
     def allowSelfSignedHttps(allowed):
         # bypass the server certificate verification on client side
@@ -85,12 +86,24 @@ def get_name_from_examples(examples, instructions, old, endpoint, api_key):
 
 @main.route("/")
 def index():
+    """
+    Index page for Factory Namespace Manager
+
+    Returns:
+        Response: Rendered HTML page for the Factory Namespace Manager.
+    """
     return render_template("index.html")
 
 
 @main.route("/fnmpage", methods=["GET", "POST"])
 @login_required
 def fnmpage():
+    """
+    Web form of the main user input for Factory Namespace Manager
+
+    Returns:
+        Response: Rendered HTML page for the Factory Namespace Manager.
+    """
     if request.method == "POST":
         # Get data from the form
         example_data = request.form.get("example_data")
@@ -106,28 +119,46 @@ def fnmpage():
     api_key = ""
     api_endpoint = ""
     if current_user.name == "demo":
-        demo_sample_input = f'{project_dir}/demo_input.txt'
-        with open(demo_sample_input, 'r') as file:
+        demo_sample_input = f"{project_dir}/demo_input.txt"
+        with open(demo_sample_input, "r") as file:
             sample_input_content = file.read().strip()
 
-        demo_sample_output = f'{project_dir}/demo_output.txt'
-        with open(demo_sample_output, 'r') as file:
+        demo_sample_output = f"{project_dir}/demo_output.txt"
+        with open(demo_sample_output, "r") as file:
             sample_output_content = file.read().strip()
 
         api_key = "NG59qEgn08kPB12Z4bokcDhQMxUPHuKB"
         api_endpoint = "https://kurt-test.eastus2.inference.ml.azure.com/"
-    return render_template("fnm.html", sample_input_content=sample_input_content,
-                           sample_output_content=sample_output_content, api_key=api_key, api_endpoint=api_endpoint)
+    return render_template(
+        "fnm.html",
+        sample_input_content=sample_input_content,
+        sample_output_content=sample_output_content,
+        api_key=api_key,
+        api_endpoint=api_endpoint,
+    )
 
 
 @main.route("/license")
-def license():
+def get_license():
+    """
+    Render the license agreement page.
+
+    Returns:
+        Response: Rendered HTML page for the license agreement.
+    """
+
     return render_template("license_agreement.html")
 
 
 @login_required
 @main.route("/generate-table", methods=["POST"])
 def generate_table():
+    """
+    Generate the table of new tag names based on the user input.
+
+    Returns:
+        Response: JSON response containing the table data.
+    """
     # Get the input from the user
     data = request.get_json()
     endpoint = data.get("endpointurl", "")
@@ -166,7 +197,13 @@ def generate_table():
 # New API route to serve the history data dynamically
 @main.route("/get-history", methods=["GET"])
 def get_history():
-    # Simulate history data (can replace this with actual logic)
+    """
+    Creates a simulated history of user saved sessions
+
+    Returns:
+        Response: JSON response containing the fake history data.
+
+    """
 
     history_data = [
         {
