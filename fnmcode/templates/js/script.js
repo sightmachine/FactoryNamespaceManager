@@ -456,3 +456,94 @@ function saveConfig() {
     localStorage.setItem('modelEndpointUrl', endpointUrl);
     localStorage.setItem('apiKey', apiKey);
 }
+
+//Import CSV
+document.getElementById('import-csv-button').addEventListener('click', function() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.csv';  // Restrict file types to CSV
+    fileInput.click();  // Open file dialog
+
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const contents = e.target.result;
+                processCSV(contents);
+            };
+            reader.readAsText(file);
+        }
+    });
+});
+
+// Function to process CSV data
+function processCSV(csvData) {
+    const lines = csvData.split('\n');
+    const header = lines[0].split(',');  // First row is the header
+    const columnIndices = getColumnIndices(header);  // Get the correct indices for the columns
+
+    let formattedText = '';
+
+    // Loop through each line in the CSV (skip header row)
+    for (let i = 1; i < lines.length; i++) {
+        const columns = lines[i].split(',');
+
+        // Get the values using the column indices
+        const oldName = columns[columnIndices.oldName];
+        const keywords = columns[columnIndices.keywords];
+        const newName = columns[columnIndices.newName];
+
+        // Format the output
+        if (oldName && newName) {
+            let entry = `old: "${oldName.trim()}"`;
+            if (keywords) {
+                entry += `, keywords: "${keywords.trim()}"`;
+            }
+            entry += `, new: "${newName.trim()}"`;
+            formattedText += entry + '\n';
+        }
+    }
+
+    // Append the formatted text to the existing textarea content
+    const textarea = document.getElementById('input-textarea');
+    //textarea.value += '\n' + formattedText;
+    // Check if the textarea already has content before appending the formatted text
+    if (textarea.value.trim()) {
+        // Append the formatted text to the existing textarea content
+        textarea.value += '\n' + formattedText;
+    } else {
+        // If the textarea is empty, replace its content with the formatted text
+        textarea.value = formattedText;
+    }
+}
+
+// Function to map the column indices based on the header
+function getColumnIndices(header) {
+    const columnIndices = {
+        oldName: -1,
+        keywords: -1,
+        newName: -1
+    };
+
+    // Define possible variations of the column names
+    const oldNameVariants = ['old_name', 'old-name', 'old name'];
+    const newNameVariants = ['new_name', 'new-name', 'new name'];
+    const keywordsVariants = ['keywords'];
+
+    // Loop through the header to find the correct columns
+    for (let i = 0; i < header.length; i++) {
+        const headerCell = header[i].toLowerCase().trim();
+
+        // Match the header cell with the possible variants
+        if (oldNameVariants.some(variant => headerCell === variant)) {
+            columnIndices.oldName = i;
+        } else if (newNameVariants.some(variant => headerCell === variant)) {
+            columnIndices.newName = i;
+        } else if (keywordsVariants.some(variant => headerCell === variant)) {
+            columnIndices.keywords = i;
+        }
+    }
+
+    return columnIndices;
+}

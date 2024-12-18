@@ -127,8 +127,8 @@ def fnmpage():
         with open(demo_sample_output, "r") as file:
             sample_output_content = file.read().strip()
 
-        api_key = "NG59qEgn08kPB12Z4bokcDhQMxUPHuKB"
-        api_endpoint = "https://kurt-test.eastus2.inference.ml.azure.com/"
+        api_key = "rISeEPawBAuuG59K2MGfqp5aFMsLhWB0"
+        api_endpoint = "https://fnm-5630-bbfga.eastus2.inference.ml.azure.com/score"
     return render_template(
         "fnm.html",
         sample_input_content=sample_input_content,

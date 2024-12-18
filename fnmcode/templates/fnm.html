@@ -63,10 +63,12 @@
             <button class="secondary-button" id="history-button">HISTORY</button>
             {% if current_user.name == "demo" %}
             <button class="secondary-button" id="configuration-button-demo">CONFIGURATION</button>
-            <button class="submit-button" id="submit-button_demo">SUBMIT</button>
+            <button class="secondary-button" id="import-csv-button">IMPORT CSV</button> <!-- New button -->
+            <!-- <button class="submit-button" id="submit-button_demo">SUBMIT</button> -->
             {% else %}
             <button class="secondary-button" id="configuration-button">CONFIGURATION</button>
-            <button class="submit-button" id="submit-button">SUBMIT</button>
+            <button class="secondary-button" id="import-csv-button">IMPORT CSV</button> <!-- New button -->
+            <!-- <button class="submit-button" id="submit-button">SUBMIT</button> -->
             {% endif %}
         </div>
         {% if current_user.is_authenticated %}
