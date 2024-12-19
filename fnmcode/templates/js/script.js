@@ -233,6 +233,7 @@ if (submitButton.length > 0) {
         const additionalInfo = document.getElementById('additional-info').value;
         const modelEndpointUrl = localStorage.getItem('modelEndpointUrl');
         const apiKey = localStorage.getItem('apiKey');
+        const num_threads = document.getElementById('num_threads').value;
 
         fetch('/generate-table', {
             method: 'POST',
@@ -244,7 +245,8 @@ if (submitButton.length > 0) {
                 endpointurl: modelEndpointUrl,
                 apikey: apiKey,
                 rename_tags: renameTags,
-                additional_info: additionalInfo
+                additional_info: additionalInfo,
+                num_threads: num_threads
             }),
         })
             .then(response => response.json())
@@ -308,6 +310,7 @@ if (submitButtonDemo.length > 0) {
             const additionalInfo = document.getElementById('additional-info').value;
             const modelEndpointUrl = localStorage.getItem('modelEndpointUrl');
             const apiKey = localStorage.getItem('apiKey');
+            const num_threads = document.getElementById('num_threads').value;
 
             fetch('/generate-table', {
                 method: 'POST',
@@ -319,7 +322,8 @@ if (submitButtonDemo.length > 0) {
                     endpointurl: modelEndpointUrl,
                     apikey: apiKey,
                     rename_tags: renameTags,
-                    additional_info: additionalInfo
+                    additional_info: additionalInfo,
+                    num_threads: num_threads
                 }),
             })
                 .then(response => response.json())
