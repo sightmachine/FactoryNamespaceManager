@@ -179,7 +179,7 @@
             <textarea class="textarea-tiny" placeholder='API Key' id="api-key">{{ api_key }}</textarea>
 
             <div class="textarea-title">Thread Count</div>
-            <textarea class="textarea-tiny" placeholder='Thead Count' id="num_threads">2</textarea>
+            <input type="number" id="num_threads" value="2" min="1" max="5" placeholder="Thread Count">
 
             <div class="button-container-modal">
                 <button class="secondary-button" id="cancel-config-modal" onClick="">CANCEL</button>
