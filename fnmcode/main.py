@@ -1,4 +1,10 @@
 import os
+import threading
+import concurrent.futures
+import json
+import urllib.request
+import urllib.error
+import ssl
 
 from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
@@ -6,13 +12,10 @@ from werkzeug.utils import secure_filename
 from typing import List
 
 from . import db
+from .utils import timing_decorator, make_request_with_retries
 
 main = Blueprint("main", __name__)
 
-import urllib.request
-import json
-import os
-import ssl
 
 current_file_path = os.path.abspath(__file__)
 project_dir = os.path.dirname(current_file_path)
@@ -71,17 +74,10 @@ def get_name_from_examples(examples, instructions, old, endpoint, api_key):
     }
     req = urllib.request.Request(url, body, headers)
 
-    try:
-        response = urllib.request.urlopen(req)
+    response = make_request_with_retries(req)
 
-        result = response.read()
-        return json.loads(result)["output"].strip()
-
-    except urllib.error.HTTPError as error:
-        print("The request failed with status code: " + str(error.code))
-
-        print(error.info())
-        print(error.read().decode("utf8", "ignore"))
+    result = response.read()
+    return json.loads(result)["output"].strip()
 
 
 @main.route("/")
@@ -152,6 +148,7 @@ def get_license():
 
 @login_required
 @main.route("/generate-table", methods=["POST"])
+@timing_decorator
 def generate_table():
     """
     Generate the table of new tag names based on the user input.
@@ -167,11 +164,19 @@ def generate_table():
     user_input_new_tags = data.get("rename_tags", "")
     user_input_instructions = data.get("additional_info", "")
 
+    # Get the configurable number of threads (default to 3 if not provided)
+    num_threads = data.get("num_threads", 3)
+
+    # Initialize an empty list to store the results
     table_data = []
-    for new_tag_info in user_input_new_tags.split("\n"):
+
+    # Use a thread lock to safely append to the table_data from multiple threads
+    lock = threading.Lock()
+
+    def process_new_tag(new_tag_info):
+        # This function will process a single new_tag_info in parallel
         if not new_tag_info:
-            continue
-        print(f"For {new_tag_info}")
+            return None
 
         try:
             tag_new_name = get_name_from_examples(
@@ -181,14 +186,29 @@ def generate_table():
                 endpoint,
                 api_key,
             )
-            print(f"Answer is {tag_new_name}")
+            print(f"For {new_tag_info} Answer is {tag_new_name}")
 
-            table_data.append(
-                {"input_definition": new_tag_info, "new_name": tag_new_name}
-            )
+            # Return the result to be appended to table_data
+            return {"input_definition": new_tag_info, "new_name": tag_new_name}
+
         except Exception as e:
             print(f"Error: {e}")
-            tag_new_name = "Error"
+            return {"input_definition": new_tag_info, "new_name": "Error"}
+
+    # Use ThreadPoolExecutor to process each new_tag_info in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+        # Start parallel execution of the tasks
+        futures = [
+            executor.submit(process_new_tag, new_tag_info)
+            for new_tag_info in user_input_new_tags.split("\n")
+        ]
+
+        # Collect the results as they complete
+        for future in concurrent.futures.as_completed(futures):
+            result = future.result()
+            if result:
+                with lock:
+                    table_data.append(result)
 
     # Return the data in JSON format
     return jsonify(table_data)
