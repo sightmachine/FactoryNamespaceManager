@@ -45,7 +45,9 @@ def make_request_with_retries(req, max_retries=5, retry_delay=1):
                 print(
                     f"Received status code {error.code}. Retrying attempt {retries} .."
                 )
-                # time.sleep(retry_delay)
+                if retries>2:
+                    print("Delay added while retrying")
+                    time.sleep(retry_delay)
             else:
                 print(
                     f"Request failed with status code {error.code}. No retry will be attempted."

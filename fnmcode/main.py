@@ -163,8 +163,9 @@ def generate_table():
     user_input_examples = data.get("input", "")
     user_input_new_tags = data.get("rename_tags", "")
     user_input_instructions = data.get("additional_info", "")
+
     # Get the configurable number of threads (default to 3 if not provided)
-    num_threads = int(data.get("num_threads", 2))
+    num_threads = int(data.get("num_threads", 3))
 
     # Initialize an empty list to store the results
     table_data = []
