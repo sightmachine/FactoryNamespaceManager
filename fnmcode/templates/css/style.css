@@ -397,3 +397,64 @@ a {
         transform: rotate(360deg);
     }
 }
+
+.editable-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align left */
+}
+
+.session-name {
+    margin-right: 10px;
+    padding-left: 20px; /* Indentation to the right */
+    border-bottom: 1px solid #ccc; /* Optional: border to indicate it's editable */
+    min-width: 100px;
+    cursor: text; /* Change cursor to indicate text can be edited */
+}
+
+.edit-icon {
+    cursor: pointer;
+    font-size: 18px; /* You can adjust the size of the pencil icon */
+}
+
+/* Optional: Adding hover effect for edit icon */
+.edit-icon:hover {
+    color: blue;
+}
+
+
+/* Add a new container for the buttons (to align them to the right) */
+.buttons-container {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    gap: 10px; /* Space between the buttons */
+    margin-top: 10px; /* Add some margin to space the buttons from the content */
+}
+
+/* Style for View button */
+.view-button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-button:hover {
+    background-color: #0056b3;
+}
+
+/* Style for Delete button */
+.delete-button {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}

@@ -58,5 +58,9 @@ def create_app(app):
     from fnmcode.main import main as main_blueprint
 
     app.register_blueprint(main_blueprint)
+    
+    # Flask Migration
+    from flask_migrate import Migrate
+    migrate = Migrate(app, db)
 
     return app

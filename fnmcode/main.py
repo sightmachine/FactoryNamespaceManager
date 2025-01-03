@@ -5,17 +5,21 @@ import json
 import urllib.request
 import urllib.error
 import ssl
+from datetime import datetime
 
-from flask import Blueprint, render_template, request, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for, flash
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 from typing import List
+from faker import Faker
+from sqlalchemy.exc import IntegrityError
 
 from . import db
 from .utils import timing_decorator, make_request_with_retries
+from fnmcode.models import FNMSessions
 
 main = Blueprint("main", __name__)
-
+fake = Faker()
 
 current_file_path = os.path.abspath(__file__)
 project_dir = os.path.dirname(current_file_path)
@@ -91,6 +95,17 @@ def index():
     return render_template("index.html")
 
 
+def generate_session_name():
+    """Function to generate session name"""
+    random_words = fake.words(2)
+    capitalized_words = [word.capitalize() for word in random_words]
+    session_name = "_".join(capitalized_words)
+    # Get the current UTC time and format it
+    current_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    session_name = f"{session_name}_{current_timestamp}"
+    return session_name
+
+
 @main.route("/fnmpage", methods=["GET", "POST"])
 @login_required
 def fnmpage():
@@ -125,12 +140,16 @@ def fnmpage():
 
         api_key = "rISeEPawBAuuG59K2MGfqp5aFMsLhWB0"
         api_endpoint = "https://fnm-5630-bbfga.eastus2.inference.ml.azure.com/score"
+
+    session_name = generate_session_name()
+
     return render_template(
         "fnm.html",
         sample_input_content=sample_input_content,
         sample_output_content=sample_output_content,
         api_key=api_key,
         api_endpoint=api_endpoint,
+        session_name=session_name,
     )
 
 
@@ -163,6 +182,7 @@ def generate_table():
     user_input_examples = data.get("input", "")
     user_input_new_tags = data.get("rename_tags", "")
     user_input_instructions = data.get("additional_info", "")
+    session_name = data.get("session_name", generate_session_name())
 
     # Get the configurable number of threads (default to 3 if not provided)
     num_threads = int(data.get("num_threads", 3))
@@ -210,55 +230,106 @@ def generate_table():
                 with lock:
                     table_data.append(result)
 
+    # After processing, create a session for this user
+    existing_session = FNMSessions.query.filter_by(
+        name=session_name, user_id=current_user.id
+    ).first()
+
+    if existing_session:
+        existing_session.inputs = user_input_examples
+        existing_session.instructions = user_input_instructions
+        existing_session.tags = user_input_new_tags
+    else:
+        new_session = FNMSessions(
+            name=session_name,
+            inputs=user_input_examples,
+            instructions=user_input_instructions,
+            tags=user_input_new_tags,
+            user_id=current_user.id,
+        )
+        db.session.add(new_session)
+    db.session.commit()
+
     # Return the data in JSON format
     return jsonify(table_data)
 
 
 # New API route to serve the history data dynamically
+@login_required
 @main.route("/get-history", methods=["GET"])
 def get_history():
     """
-    Creates a simulated history of user saved sessions
-
-    Returns:
-        Response: JSON response containing the fake history data.
-
+    Returns a history of user saved sessions
     """
+    # Query session
+    sessions = (
+        FNMSessions.query.filter_by(user_id=current_user.id)
+        .order_by(FNMSessions.created_at.desc())
+        .all()
+    )
 
     history_data = [
         {
-            "description": "2023-10-20T14:43Z_Bold_Lion",
-            "timestamp": "2024-01-25T00:50:00Z",
-        },
-        {
-            "description": "2023-10-22T16:50Z_Brave_Tiger",
-            "timestamp": "2024-01-24T12:52:00Z",
-        },
-        {
-            "description": "2023-10-20T14:43Z_Quiet_Owl",
-            "timestamp": "2024-01-23T12:32:00Z",
-        },
-        {
-            "description": "2023-10-20T14:43Z_Mighty_Eagle",
-            "timestamp": "2024-01-22T12:05:00Z",
-        },
-        {
-            "description": "2023-10-21T14:43Z_Bright_Star",
-            "timestamp": "2024-01-21T12:08:00Z",
-        },
-        {
-            "description": "2023-10-21T14:43Z_Wise_Panda",
-            "timestamp": "2024-01-20T12:35:00Z",
-        },
-        {
-            "description": "2023-10-21T14:43Z_Fierce_Tiger",
-            "timestamp": "2024-01-19T12:25:00Z",
-        },
-        {
-            "description": "2023-10-21T14:43Z_Gentle_Dove",
-            "timestamp": "2024-01-18T12:15:00Z",
-        },
+            "id": session.id,
+            "description": session.name,
+            "timestamp": session.created_at.isoformat(),
+        }
+        for session in sessions
     ]
 
     # Return history data as JSON response
     return jsonify({"history": history_data})
+
+
+@main.route("/delete-history/<session_id>", methods=["DELETE"])
+@login_required  # Ensures the user is logged in
+def delete_history(session_id):
+    # Find the session by its ID
+    session = FNMSessions.query.filter_by(id=session_id).first()
+
+    # If session not found, return 404
+    if not session:
+        # flash("Session not found")
+        return jsonify({"error": "Session not found"}), 404
+
+    # Check if the current user ID matches the session's user_id
+    if int(session.user_id) != current_user.id:
+        # flash("Unauthorized !!")
+        return jsonify({"error": "Unauthorized"}), 403
+
+    # Delete the session from the database
+    try:
+        db.session.delete(session)
+        db.session.commit()
+        # flash("Session deleted successfully")
+        return jsonify({"message": "Session deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        # flash(f"An error occurred: {str(e)}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
+
+@main.route("/view-history/<session_id>", methods=["GET"])
+@login_required  # Ensures the user is logged in
+def view_history(session_id):
+    # Find the session by its ID
+    session = FNMSessions.query.filter_by(id=session_id).first()
+
+    # If session not found, return 404
+    if not session:
+        # flash("Session not found")
+        return jsonify({"error": "Session not found"}), 404
+
+    # Check if the current user ID matches the session's user_id
+    if int(session.user_id) != current_user.id:
+        # flash("Unauthorized !!")
+        return jsonify({"error": "Unauthorized"}), 403
+
+    return jsonify(
+        {
+            "session_name": session.name,
+            "sample_input_content": session.inputs,
+            "sample_output_content": session.tags,
+            "sample_instructions": session.instructions,
+        }
+    )

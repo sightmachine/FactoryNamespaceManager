@@ -234,6 +234,7 @@ if (submitButton.length > 0) {
         const modelEndpointUrl = localStorage.getItem('modelEndpointUrl');
         const apiKey = localStorage.getItem('apiKey');
         const num_threads = document.getElementById('num_threads').value;
+        const session_name = document.getElementById('session-name').innerText;
 
         fetch('/generate-table', {
             method: 'POST',
@@ -246,7 +247,8 @@ if (submitButton.length > 0) {
                 apikey: apiKey,
                 rename_tags: renameTags,
                 additional_info: additionalInfo,
-                num_threads: num_threads
+                num_threads: num_threads,
+                session_name: session_name
             }),
         })
             .then(response => response.json())
@@ -311,6 +313,7 @@ if (submitButtonDemo.length > 0) {
             const modelEndpointUrl = localStorage.getItem('modelEndpointUrl');
             const apiKey = localStorage.getItem('apiKey');
             const num_threads = document.getElementById('num_threads').value;
+            const session_name = document.getElementById('session-name').innerText;
 
             fetch('/generate-table', {
                 method: 'POST',
@@ -323,7 +326,8 @@ if (submitButtonDemo.length > 0) {
                     apikey: apiKey,
                     rename_tags: renameTags,
                     additional_info: additionalInfo,
-                    num_threads: num_threads
+                    num_threads: num_threads,
+                    session_name: session_name
                 }),
             })
                 .then(response => response.json())
@@ -412,6 +416,36 @@ function fetchHistory() {
 
                 timestamp.appendChild(timeSpan);
                 historyDiv.appendChild(timestamp);
+
+                // Create buttons container
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.classList.add('buttons-container');
+
+                // View button
+                const viewButton = document.createElement('button');
+                viewButton.classList.add('view-button');
+                viewButton.textContent = 'View';
+                viewButton.onclick = () => {
+                    console.log('View history item:', item.id);
+                    viewHistoryItem(item.id);
+                };
+
+                // Delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => {
+                    console.log('Delete history item:', item.id);
+                    deleteHistoryItem(item.id);
+                };
+
+                // Append buttons to the buttons container
+                buttonsContainer.appendChild(viewButton);
+                buttonsContainer.appendChild(deleteButton);
+
+                // Append buttons container to the history div
+                historyDiv.appendChild(buttonsContainer);
+
 
                 // Append the historyDiv to the link element
                 historyLink.appendChild(historyDiv);
@@ -551,3 +585,65 @@ function getColumnIndices(header) {
 
     return columnIndices;
 }
+
+// When the user clicks the pencil icon, toggle the editable state
+document.getElementById('edit-icon').addEventListener('click', function() {
+    const sessionNameElement = document.getElementById('session-name');
+    
+    // Toggle editable state when the pencil icon is clicked
+    if (sessionNameElement.isContentEditable) {
+        // Make it non-editable again after user has finished editing
+        sessionNameElement.setAttribute('contenteditable', 'false');
+    } else {
+        // Enable editing
+        sessionNameElement.setAttribute('contenteditable', 'true');
+        sessionNameElement.focus();
+    }
+})
+
+
+function deleteHistoryItem(id) {
+    fetch(`/delete-history/${id}`, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Item deleted:', data);
+        fetchHistory();
+    })
+    .catch(error => {
+        console.error('Error deleting history item:', error);
+    });
+}
+
+function viewHistoryItem(id) {
+    console.log('View history item:', id);
+   
+    // Make an API call to the Flask view-history endpoint
+    fetch(`/view-history/${id}`, {
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            console.error(data.error); 
+            alert(data.error); 
+        } else {
+            console.log('Session details:', data);
+            // Render the JSON data on the page
+            document.getElementById('session-name').innerText = data.session_name;
+            document.getElementById('input-textarea').value = data.sample_input_content;
+            document.getElementById('additional-info').value = data.sample_instructions;
+            document.getElementById('rename-tags').value = data.sample_output_content;
+            loadConfig();
+
+            //modal close
+            historyModal.style.display = 'none';
+            modalBackdrop.style.display = 'none';
+           
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching session details:', error);
+    });
+};

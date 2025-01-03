@@ -81,6 +81,15 @@
     <div class="textarea-container">
         <div class="textarea-title">Example variable names, keywords and the new assigned name.
             <a href="#" class="learn-more" target="_blank">Instructions</a>
+            <!-- Container for the session name with pencil icon -->
+            <span class="editable-container">
+                <span id="session-name" class="session-name">
+                    {{ session_name }}
+                </span>
+                <span id="edit-icon" class="edit-icon">
+                    🖊️ <!-- You can use FontAwesome or any icon library here -->
+                </span>
+            </span>
         </div>
         <textarea id="input-textarea" class="textarea-large"
                   placeholder='Old_Variable_Name "Old keywords" New_Variable_Name'>{{ sample_input_content }}</textarea>
@@ -98,7 +107,7 @@
         <div class="textarea-title">(Optional) Additional instructions.
             <a href="#" class="learn-more" target="_blank">Instructions</a>
         </div>
-        <textarea class="textarea-small" id="additional-info" placeholder="Instructions"></textarea>
+        <textarea class="textarea-small" id="additional-info" placeholder="Instructions">{{ sample_instructions }}</textarea>
 
     </div>
 
